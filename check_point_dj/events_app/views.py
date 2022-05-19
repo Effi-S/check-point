@@ -12,7 +12,8 @@ def post(request) -> JsonResponse:
     The time_stamp is automatically  generated."""
     # --1-- Validating input
     if not request.body:
-        return JsonResponse({'message': f'Empty request'}, status=204)
+        return JsonResponse({'message': f'Empty request'},
+                            status=204)
 
     # --2-- Adding an EventItem
     item = EventItem.objects.create(data=request.body)
@@ -25,9 +26,9 @@ def post(request) -> JsonResponse:
 
 
 @csrf_exempt  # [Note: This removes csrf for showcase]
-def get_stats(request, interval: str) -> JsonResponse:
+def get_stats(request) -> JsonResponse:
     """Get the merged stats for the last 'interval' seconds"""
-    # --3-- Responding
+    interval = int(request.GET['interval'])
     return JsonResponse({'dummy': 'dummy',
                          'interval': interval},
                         status=200)
