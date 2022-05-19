@@ -1,5 +1,5 @@
 """
-WSGI config for check_point_dj project.
+WSGI config for key_words_api project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'check_point_dj.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'key_words_api.settings')
 
 application = get_wsgi_application()

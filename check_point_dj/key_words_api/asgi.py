@@ -1,5 +1,5 @@
 """
-ASGI config for check_point_dj project.
+ASGI config for key_words_api project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'check_point_dj.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'key_words_api.settings')
 
 application = get_asgi_application()
