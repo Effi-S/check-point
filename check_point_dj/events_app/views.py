@@ -1,5 +1,7 @@
 """Here we hold views to our events api
 """
+from collections import Counter
+
 from django.http import JsonResponse
 
 from .models import EventItem
@@ -29,9 +31,8 @@ def post(request) -> JsonResponse:
 @csrf_exempt  # [Note: This removes csrf for showcase]
 def get_stats(request) -> JsonResponse:
     """Get the merged stats for the last 'interval' seconds"""
-    interval = int(request.GET.get('interval', 0))
-    # --0-- if no interval retrieving all stats
     # --1-- Establish the start time to search from then forward
+    interval = int(request.GET['interval'])
     start = dt.now() - timedelta(seconds=interval)
 
     # --2-- Query the model
@@ -44,5 +45,12 @@ def get_stats(request) -> JsonResponse:
                             status=204)
 
     # --3-- Merge the dictionaries
-    merged = dict(x for e in events for x in e.stats.items())
-    return JsonResponse(merged, status=200)
+    # Counter cleans up boiler-plate
+    # Any value not found in Counter defaults to 0.
+    # ( => we don't have to check if key exists before updating it's value)
+    counter = Counter()
+    for event in events:
+        for k, v in event.stats.items():
+            counter[k] += v
+
+    return JsonResponse(counter, status=200)
