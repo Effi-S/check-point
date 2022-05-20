@@ -4,6 +4,7 @@ from django.http import JsonResponse
 
 from .models import EventItem
 from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime as dt, timedelta
 
 
 @csrf_exempt  # [Note: This removes csrf for showcase]
@@ -21,14 +22,25 @@ def post(request) -> JsonResponse:
     # --3-- Responding
     return JsonResponse({'message': f'Event Item created!',
                          'data': item.data.decode("utf-8"),
-                         'time_stamp': f'{bool(item.time_stamp)}'},
+                         'time_stamp': f'{item.time_stamp}'},
                         status=201)
 
 
 @csrf_exempt  # [Note: This removes csrf for showcase]
 def get_stats(request) -> JsonResponse:
     """Get the merged stats for the last 'interval' seconds"""
+    # --1-- Establish the start time
     interval = int(request.GET['interval'])
-    return JsonResponse({'dummy': 'dummy',
-                         'interval': interval},
-                        status=200)
+    start = dt.now() - timedelta(seconds=interval)
+
+    # --2-- Query the model
+    events = EventItem.objects.filter(time_stamp__gte=start)
+
+    if not events:
+        return JsonResponse({'message': f'No Event was found created '
+                                        f'after: {interval} seconds ago'},
+                            status=204)
+
+    # --3-- Merge the dictionaries
+    merged = dict(x for e in events for x in e.stats.items())
+    return JsonResponse(merged, status=200)
