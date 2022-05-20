@@ -1,7 +1,6 @@
 """Here we hold views to our events api
 """
 from django.http import JsonResponse
-from django.utils import timezone
 
 from .models import EventItem
 from django.views.decorators.csrf import csrf_exempt
