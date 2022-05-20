@@ -2,7 +2,7 @@
 
 ## Depedencies 
  - Python 3.9 
- - Django 
+ - Django 4.0.4
  
 ## Usage
 ### To turn on the server:
