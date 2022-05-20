@@ -19,7 +19,8 @@ class EventItem(models.Model):
             2) 'time_stamp' - A timestamp of the event.
     """
     data = models.TextField()
-    time_stamp = models.DateTimeField(auto_now_add=True)
+    time_stamp = models.DateTimeField(auto_now_add=True,
+                                      )
     stats = models.JSONField()
 
     def __init__(self, *args, **kwargs):
@@ -42,10 +43,8 @@ class EventItem(models.Model):
 
         # --1-- making lowercase + splitting into words.
         words = data.lower().split()
-        print(words)
 
         # --2-- counting each keyword.
         ret = {b: words.count(b) for b in BUCKETS}
-        print(ret)
         return ret
 

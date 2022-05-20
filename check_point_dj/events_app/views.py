@@ -1,6 +1,7 @@
 """Here we hold views to our events api
 """
 from django.http import JsonResponse
+from django.utils import timezone
 
 from .models import EventItem
 from django.views.decorators.csrf import csrf_exempt
@@ -29,12 +30,14 @@ def post(request) -> JsonResponse:
 @csrf_exempt  # [Note: This removes csrf for showcase]
 def get_stats(request) -> JsonResponse:
     """Get the merged stats for the last 'interval' seconds"""
-    # --1-- Establish the start time
-    interval = int(request.GET['interval'])
+    interval = int(request.GET.get('interval', 0))
+    # --0-- if no interval retrieving all stats
+    # --1-- Establish the start time to search from then forward
     start = dt.now() - timedelta(seconds=interval)
 
     # --2-- Query the model
     events = EventItem.objects.filter(time_stamp__gte=start)
+    print(len(events))
 
     if not events:
         return JsonResponse({'message': f'No Event was found created '
