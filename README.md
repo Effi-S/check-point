@@ -8,6 +8,10 @@
 ### To turn on the server:
   - Goto main package -> check_point_dj
   - run: 'python manage.py runserver'
+### Or, use docker:
+1) run Docker server 
+2) docker build --tag python-django .
+3) docker run --publish 8000:8000 python-django
 
 ### To access the API via curl:
 - http://localhost:8000/api/v1/events 
